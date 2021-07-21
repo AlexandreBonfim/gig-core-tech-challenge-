@@ -2,14 +2,15 @@
   "name": "server",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "dev": "nodemon ./src/socket/socket.js"
+    "dev": "nodemon ./src/index.js"
   },
   "license": "MIT",
   "dependencies": {
+    "@socket.io/redis-adapter": "^7.0.0",
     "amqplib": "^0.8.0",
     "express": "^4.17.1",
+    "redis": "^3.1.2",
     "socket.io": "^4.1.3"
   },
   "devDependencies": {

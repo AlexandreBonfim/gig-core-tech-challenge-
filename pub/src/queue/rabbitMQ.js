@@ -1,4 +1,4 @@
-import amqp from 'amqplib/callback_api';
+const amqp = require('amqplib/callback_api');
 
 const rabbitUrl = 'amqp://localhost';
 
@@ -19,7 +19,7 @@ const sendRabbitMQ = (queueName, data) => {
             });
             channel.sendToQueue(queue, Buffer.from(data));
 
-            console.log(" [x] Sent %s", data);
+            console.log("payload ===", data);
         });
         setTimeout(() => {
             connection.close();
@@ -27,4 +27,5 @@ const sendRabbitMQ = (queueName, data) => {
         }, 500);
     });
 }
-export default { sendRabbitMQ };
+
+module.exports = sendRabbitMQ;
