@@ -1,8 +1,19 @@
-const app = require('express')();
-const server = require('http').Server(app);
-const io = require('socket.io')(server);
-const { addUser, removeUser, getUsersInRoom } = require('../user/users');
+import express from 'express';
+import http from 'http';
+import { Server } from "socket.io";
+import { addUser, removeUser, getUsersInRoom } from '../user/users.js';
 
+const app = express();
+const server = http.createServer(app);
+const PORT = process.env.PORT || 5000;
+
+const corsOptions = {
+    cors: {
+    origin: ["http://localhost:3000"],
+    },
+};
+    
+const io = new Server(server, corsOptions);
 const socket = io.on("connect", (socket) => {
     socket.on("join", ({ name, room }, callback) => {
         const { error, user } = addUser({
@@ -50,4 +61,4 @@ const socket = io.on("connect", (socket) => {
 
 export default { socket };
 
-server.listen(1923);
+server.listen(PORT);
