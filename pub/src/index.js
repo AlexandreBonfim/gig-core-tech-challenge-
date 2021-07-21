@@ -5,6 +5,13 @@ const io = require('socket.io')(server, {
         origin: ['http://localhost:3000'],
         },
     })
+    const { createClient } = require('redis');
+const redisAdapter = require('@socket.io/redis-adapter');
+
+const pubClient = createClient({ host: 'localhost', port: 6379 });
+const subClient = pubClient.duplicate();
+io.adapter(redisAdapter(pubClient, subClient));
+
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./repositories/userRepository');
 const rabbitMQ = require('./queue/rabbitMQ');
 

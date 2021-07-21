@@ -4,6 +4,12 @@ const app = require('express')();
 const server = require('http').Server(app);
 const PORT = process.env.PORT || 5001;
 
+const { Emitter } = require("@socket.io/redis-emitter");
+const { createClient } = require("redis"); 
+
+const redisClient = createClient();
+const io = new Emitter(redisClient);
+
 const amqp = require('amqplib/callback_api');
 
 amqp.connect('amqp://localhost', function (error0, connection) {
@@ -26,8 +32,10 @@ amqp.connect('amqp://localhost', function (error0, connection) {
         channel.consume(queue, function (data) {
             const message = JSON.parse(data.content.toString())
             console.log("message === ", message);
-            //Socket Trigger All Clients
-            // io.socket.emit("updatedStock", stock);
+            console.log("room === ", message.room);
+            // Socket trigger all clients
+            io.to(message.room).emit('message', { user: message.user.name, text: message.text });
+
         }, {
             // Data is consumed, it will remove from the queue
             noAck: true
