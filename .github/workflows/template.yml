@@ -13,31 +13,52 @@ jobs:
   sub-service-job:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # - name: Set up Node.js ${{ matrix.node-version }}
+    #   uses: actions/setup-node@v1
+    #   with:
+    #     node-version: ${{ matrix.node-version }}
+
     steps:
     - name: Install dependencies
       run: npm install
       working-directory: sub
 
     - name: Run the tests and generate coverage report
-      run: npm test -- --coverage
+      run: npm test
       working-directory: sub
-
-    - name: Upload coverage to CodeCovSub
-      uses: CodeCovSub/CodeCovSub-action@v1
       
   pub-service-job:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
     steps:
     - name: Install dependencies
       run: npm install
       working-directory: pub
 
     - name: Run the tests and generate coverage report
-      run: npm test -- --coverage
+      run: npm test
       working-directory: pub
 
-    - name: Upload coverage to CodeCovPub
-      uses: CodeCovPub/CodeCovPub-action@v1
 
 
