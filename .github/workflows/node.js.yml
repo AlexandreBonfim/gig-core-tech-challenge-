@@ -11,7 +11,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -25,14 +24,15 @@ jobs:
     
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
+      working-directory: pub
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
     - name: Install dependencies
-      run: cd pub npm install
-      # run: cd sub npm install
-      # run: cd client
+      run: npm install
+      working-directory: pub
 
     - name: Run the tests
-      run: cd pub npm test
+      run: npm test
+      working-directory: pub
