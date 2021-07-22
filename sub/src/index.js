@@ -27,14 +27,11 @@ amqp.connect('amqp://localhost', function (error0, connection) {
             durable: false
         });
 
-        console.log(" [*] Waiting for stockData messages in %s. To exit press CTRL+C", queue);
-
         channel.consume(queue, function (data) {
             const message = JSON.parse(data.content.toString())
-            console.log("message === ", message);
-            console.log("room === ", message.room);
+            
             // Socket trigger all clients
-            io.to(message.room).emit('message', { user: message.user.name, text: message.text });
+            io.to(message.room).emit('message', { user: message.user, text: message.text });
 
         }, {
             // Data is consumed, it will remove from the queue

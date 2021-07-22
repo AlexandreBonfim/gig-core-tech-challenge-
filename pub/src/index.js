@@ -18,7 +18,9 @@ const rabbitMQ = require('./queue/rabbitMQ');
 const PORT = process.env.PORT || 5000;
 
 module.exports = {
+    // Start connection
     socket : any = io.on('connect', (socket) => {
+        // Listen to join click
         socket.on('join', ({ name, room }, callback) => {
             const { error, user } = addUser({
                 id: socket.id,
@@ -49,10 +51,8 @@ module.exports = {
     
         socket.on('sendMessage', (message, callback) => {
             const user = getUser(socket.id);
-            console.log('test', user);
-            //io.to(user.room).emit('message', { user: user.name, text: message });
 
-            // send to queue
+            // Send to queue
             rabbitMQ('challenge-gig', JSON.stringify({ user: user.name, room: user.room, text: message }));
 
             callback();
