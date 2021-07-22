@@ -31,8 +31,8 @@ jobs:
 
     - name: Install dependencies
       run: cd pub npm install
-      run: cd sub npm install
-      run: cd client
+      # run: cd sub npm install
+      # run: cd client
 
     - name: Run the tests
     - run: cd pub npm test
