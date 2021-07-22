@@ -26,7 +26,6 @@ jobs:
     #   with:
     #     node-version: ${{ matrix.node-version }}
 
-    steps:
     - name: Install dependencies
       run: npm install
       working-directory: sub
@@ -51,7 +50,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    steps:
     - name: Install dependencies
       run: npm install
       working-directory: pub
